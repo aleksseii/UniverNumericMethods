@@ -8,6 +8,7 @@
 #define sign(x) (x > 0 ? 1.0 : (x < 0 ? -1.0 : 0.0))
 
 #define EPSILON 0.001
+#define DECIMALS 4
 #define u64 uint64_t
 
 #include <stdio.h>

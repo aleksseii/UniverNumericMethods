@@ -26,10 +26,9 @@ void dichotomy_solve(double x_start, double x_end) {
     while (flag) {
 
         // Point 3:
-
-        double sum = round_n((x_start + x_end), 4);
-        x_center = round_n(sum / 2, 4);
-        f_center = round_n(dichotomy_f(x_center), 4);
+        double sum = round_n((x_start + x_end), DECIMALS);
+        x_center = round_n(sum / 2, DECIMALS);
+        f_center = round_n(dichotomy_f(x_center), DECIMALS);
 
         // Point 4:
         if (sign(dichotomy_f(x_start)) * sign(f_center) < 0) {

@@ -36,18 +36,18 @@ void combined_solve(double x_start, double x_end) {
         }
 
         // Point 4:
-        double f_x0 = round_n(combined_f(x0), 4);
-        double f_der_x0 = round_n(combined_f_derivative(x0), 4);
+        double f_x0 = round_n(combined_f(x0), DECIMALS);
+        double f_der_x0 = round_n(combined_f_derivative(x0), DECIMALS);
         
-        double f_x0_star = round_n(combined_f(x0_star), 4);
+        double f_x0_star = round_n(combined_f(x0_star), DECIMALS);
 
-        double x1_tangent = x0 - round_n(f_x0 / f_der_x0, 4);
+        double x1_tangent = x0 - round_n(f_x0 / f_der_x0, DECIMALS);
 
-        double chord_numerator = round_n((x0 - x0_star) * f_x0_star, 4);
-        double x1_chord = x0_star - round_n(chord_numerator / (f_x0 - f_x0_star), 4);
+        double chord_numerator = round_n((x0 - x0_star) * f_x0_star, DECIMALS);
+        double x1_chord = x0_star - round_n(chord_numerator / (f_x0 - f_x0_star), DECIMALS);
 
         // Point 5:
-        double x1 = round_n((x1_tangent + x1_chord) / 2., 4);
+        double x1 = round_n((x1_tangent + x1_chord) / 2., DECIMALS);
 
         // Point 6:
         if (fabs(x1_tangent - x1_chord) < 2 * EPSILON
