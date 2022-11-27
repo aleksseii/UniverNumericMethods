@@ -1,11 +1,7 @@
 #ifndef UNIVERNUMERICMETHODS_COMBINED_METHOD_H
 #define UNIVERNUMERICMETHODS_COMBINED_METHOD_H
 
-#define EPSILON 0.001
-
-#include <stdio.h>
-#include <stdbool.h>
-#include <math.h>
+#include "../util/util.h"
 
 void combined_solve(double x_start, double x_end);
 double combined_f(double x);
@@ -17,22 +13,21 @@ void combined_solve(double x_start, double x_end) {
     // Point 1 - skip because it is too complicated to realize on computer
 
     // Point 2:
-    if (combined_f(x_start) * combined_f(x_end) > 0) {
+    if (sign(combined_f(x_start)) * sign(combined_f(x_end)) > 0) {
         printf("Dichotomy method work is not assured!\n");
         exit(EXIT_FAILURE);
     }
 
-    bool flag = true;
+    bool should_continue = true;
     size_t iteration = 1;
 
-    while (flag) {
+    while (should_continue) {
 
         // Point 3:
         double x0;
         double x0_star;
 
-
-        if (combined_f(x_start) * combined_f_2nd_derivative(x_start) > 0) {
+        if (sign(combined_f(x_start)) * sign(combined_f_2nd_derivative(x_start)) > 0) {
             x0 = x_start;
             x0_star = x_end;
         } else {
@@ -41,20 +36,24 @@ void combined_solve(double x_start, double x_end) {
         }
 
         // Point 4:
-        double x1_tangent = x0 - (combined_f(x0) / combined_f_derivative(x0));
-        double x1_chord = x0_star - (
-                (x0 - x0_star) * combined_f(x0_star) / (
-                        combined_f(x0) - combined_f(x0_star)
-                )
-        );
+        double f_x0 = round_n(combined_f(x0), 4);
+        double f_der_x0 = round_n(combined_f_derivative(x0), 4);
+        
+        double f_x0_star = round_n(combined_f(x0_star), 4);
+
+        double x1_tangent = x0 - round_n(f_x0 / f_der_x0, 4);
+
+        double chord_numerator = round_n((x0 - x0_star) * f_x0_star, 4);
+        double x1_chord = x0_star - round_n(chord_numerator / (f_x0 - f_x0_star), 4);
 
         // Point 5:
-        double x1 = (x1_tangent + x1_chord) / 2.;
+        double x1 = round_n((x1_tangent + x1_chord) / 2., 4);
 
         // Point 6:
-        if (fabs(x1_tangent - x1_chord) < 2 * EPSILON ||
-            fabs(combined_f(x1)) < EPSILON) {
-            flag = false;
+        if (fabs(x1_tangent - x1_chord) < 2 * EPSILON
+            || fabs(combined_f(x1)) < EPSILON) {
+
+            should_continue = false;
         }
 
         printf("Iteration number: %llu\n"

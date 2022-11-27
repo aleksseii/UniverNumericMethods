@@ -1,15 +1,10 @@
 #ifndef UNIVERNUMERICMETHODS_DICHOTOMY_METHOD_H
 #define UNIVERNUMERICMETHODS_DICHOTOMY_METHOD_H
 
-#define EPSILON 0.001
-
-#include <stdio.h>
-#include <stdbool.h>
-#include <math.h>
+#include "../util/util.h"
 
 void dichotomy_solve(double x_start, double x_end);
 double dichotomy_f(double x);
-
 
 void dichotomy_solve(double x_start, double x_end) {
 
@@ -31,13 +26,15 @@ void dichotomy_solve(double x_start, double x_end) {
     while (flag) {
 
         // Point 3:
-        x_center = (x_start + x_end) / 2.;
-        f_center = dichotomy_f(x_center);
+
+        double sum = round_n((x_start + x_end), 4);
+        x_center = round_n(sum / 2, 4);
+        f_center = round_n(dichotomy_f(x_center), 4);
 
         // Point 4:
-        if (dichotomy_f(x_start) * f_center < 0) {
+        if (sign(dichotomy_f(x_start)) * sign(f_center) < 0) {
             x_end = x_center;
-        } else if (dichotomy_f(x_end) * f_center < 0) {
+        } else if (sign(dichotomy_f(x_end)) * sign(f_center) < 0) {
             x_start = x_center;
         } else {
             printf("Something went wrong");
